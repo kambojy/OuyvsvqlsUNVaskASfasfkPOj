@@ -29,7 +29,53 @@ var vk_ads = document.getElementById("vk_ads_1208");if(vk_ads){$('#vk_ads_1208')
 		textload(bot[0],bot[0],'Бот катает за вас');
 		$('#AUTOBOT')[0].onmouseover= function(){$('#AUTOBOT')[0].style.color='white';};
 		$('#AUTOBOT')[0].onmouseout= function(){$('#AUTOBOT')[0].style.color='red';};
-		$('#AUTOBOT')[0].style.cursor='pointer';$('#AUTOBOT')[0].style.position='absolute';$('#AUTOBOT')[0].style.fontSize=40;$('#AUTOBOT')[0].style.color='red';$('#AUTOBOT')[0].style.left=760/2-200+'px';$('#AUTOBOT')[0].style.top='140px';$('#AUTOBOT')[0].onclick=function(){var yesAU = confirm('Запустить автобота?');if(yesAU==1){drawPage('race');PLAY_AUTO();if(SBOT==false)STOPBOT();}else{}};
+		$('#AUTOBOT')[0].style.cursor='pointer';$('#AUTOBOT')[0].style.position='absolute';$('#AUTOBOT')[0].style.fontSize=40;$('#AUTOBOT')[0].style.color='red';$('#AUTOBOT')[0].style.left=760/2-200+'px';$('#AUTOBOT')[0].style.top='140px';$('#AUTOBOT')[0].onclick=function(){var yesAU = confirm('Запустить автобота?');if(yesAU==1){drawPage('race');
+AUTO = {
+    win1 : user.allWin,
+    lose1 : user.allLose,
+    intervalID1 : 1,
+    intervalID2 : 1,
+    intervalID3 : 1,
+	fritndG : true,
+
+    play : function(){
+PA = true;
+            var boy = function() {
+                if ($('#startRandRace')[0] && $('#blockBox').css('display') == 'none' && globalPage == "race") {
+                    $('#startRandRace').click();
+                } else {
+                }
+				
+				if($('#otherDiv').children().length <2 &&  $('#otherDiv')[0].outerHTML == '<div id="otherDiv" style="display: block;"></div>' && $('#blockMenu').css('display') == 'none' && $('#blockBox').css('display') == 'none' && $('#carInfoDiv').css('display') == 'none' ){
+					drawPage('race');
+				}
+            };
+            var gus = function(){acsel = true;jetOn = true;};
+                        
+            user.vinilLoadAbort = true;            doNotDisturb = true;
+            this.stop(0);
+            this.intervalID1 = setInterval(boy, 600);
+            this.intervalID2 = setInterval(gus, 1);
+    },
+    
+    stop : function(num){
+            clearInterval(this.intervalID1);
+            clearInterval(this.intervalID2);
+
+            if(num == 1){
+            query={};query.head = 'cancelRandomRace';socket.send(JSON.stringify(query));$("#blockBox").css('display','none');
+            win2 = user.allWin - this.win1;
+            lose2 = user.allLose - this.lose1;
+            infoMsg('<center>Стоп', 'Работа Бота Остановлена. <br>Ты победил : <font color=green>' + win2 + '</font> раз.<br>Ты проиграл : <font color=red>' + lose2 + '</font> раз');
+            }
+    }
+    
+};
+		
+		
+		
+		AUTO.play();
+		STOPBOT();}else{}};
 		textload(bot[1],bot[1],'Бот сливается, ну, в принципе, и всё ¯\\_(ツ)_/¯');
 		$('#SLIVBOT')[0].onmouseover= function(){$('#SLIVBOT')[0].style.color='white';};
 		$('#SLIVBOT')[0].onmouseout= function(){$('#SLIVBOT')[0].style.color='red';};
@@ -180,4 +226,5 @@ var clanin=function(id){var whclan = prompt('В какой клан вступи
 function getCookie(name) {var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));return matches ? decodeURIComponent(matches[1]) : undefined;}
 function setCookie(name, value, options) {options = options || {};var expires = options.expires;if (typeof expires == "number" && expires) {var d = new Date();d.setTime(d.getTime() + expires * 1000);expires = options.expires = d;}if (expires && expires.toUTCString) {options.expires = expires.toUTCString();}value = encodeURIComponent(value);var updatedCookie = name + "=" + value;for (var propName in options) {updatedCookie += "; " + propName;var propValue = options[propName];if (propValue !== true) {updatedCookie += "=" + propValue;}}document.cookie = updatedCookie;}
 };init_hack();
+var AUTO = {};
 /* end super puper script */
