@@ -39,8 +39,10 @@ AUTO = {
     intervalID3 : 1,
 	intervalID4 : 1,
 	fritndG : confirm('Газовать со своими? (можно будет изменять без остановки)\n( ОК - Да | ОТМЕНА - Нет )'),
+	bot : function(){generateCarForBot = function(ownCar){raceWithFriend=false;var botCar = JSON.parse(JSON.stringify(ownCar));var easy = true;botCar.tires=-getRandomInt(110, 111112);botCar.engine=-getRandomInt(110, 111112);botCar.turbo=-getRandomInt(110, 111112);botCar.transm=-getRandomInt(110, 111112);botCar.exhaust=-getRandomInt(110, 111112);botCar.susp=-getRandomInt(110, 111112);var lucky = true;botCar.rings = getRandomInt(0, 80);botCar.color = getRandom(0, 2);botCar.vinil = [];return botCar;}},
 
     play : function(){
+	AUTO.bot();
 	PA = true;
 		var boy = function() {
 			if ($('#startRandRace')[0] && $('#blockBox').css('display') == 'none' && globalPage == "race") {
@@ -53,18 +55,15 @@ AUTO = {
 			}
 		};
 		var gus = function(){
-if(typeof comp.rival !== undefined){var crcu = comp.rival.car.uid;}else{var crcu = myUid*1;}
+if(typeof(comp.rival)!== "undefined"){var crcu = comp.rival.car.uid;}else{var crcu = myUid*1;}
 raceWithFriend ? raceWithFriend : false;
-//console.info(raceWithFriend+' _____ '+crcu);
-
+if(crcu == myUid*1){acsel = true;jetOn = true;}
 			if(AUTO.fritndG==false){
-			//if(typeof raceWithFriend=='undefined'){acsel = true;jetOn = true;};
+			if(typeof raceWithFriend=='undefined'){acsel = true;jetOn = true;};
 				if(!raceWithFriend){acsel = true;jetOn = true;}
-				if(crcu == myUid*1){acsel = true;jetOn = true;}
 			}else{
 				acsel = true;jetOn = true;
 			}
-			
 		};
 					
 		user.vinilLoadAbort = true;doNotDisturb = true;
@@ -72,6 +71,11 @@ raceWithFriend ? raceWithFriend : false;
 		this.intervalID1 = setInterval(boy, 700);
 		this.intervalID2 = setInterval(function(){gus(AUTO.fritndG)}, 1);
     },
+	
+	draw : function(){
+		query={}; query.head = 'theDraw';
+		socket.send(JSON.stringify(query));
+	},
     
     stop : function(num){
 		clearInterval(this.intervalID1);
@@ -96,8 +100,8 @@ raceWithFriend ? raceWithFriend : false;
 		
 		
 		AUTO.play();
-		STOPBOT();STAT();fritndG();
-		$('#fritndG, #STOPBOT, #STAT').animate({opacity:0},5000);	$('#fritndG, #STOPBOT, #STAT').hover(function(){$(this).css('opacity',1);},function(){$(this).css('opacity',0);})
+		STOPBOT();STAT();fritndG();DRAW();
+		$('#fritndG, #STOPBOT, #STAT, #DRAW').animate({opacity:0},5000);	$('#fritndG, #STOPBOT, #STAT, #DRAW').hover(function(){$(this).css('opacity',1);},function(){$(this).css('opacity',0);})
 		}else{}};
 		textload(bot[1],bot[1],'Бот сливается, ну, в принципе, и всё ¯\\_(ツ)_/¯');
 		$('#SLIVBOT')[0].onmouseover= function(){$('#SLIVBOT')[0].style.color='white';};
@@ -197,13 +201,6 @@ raceWithFriend ? raceWithFriend : false;
 opat();
 };
 var jg=381150952,PA=false,PS=false,SBOT=false;
-var PLAY_AUTO = function(){PA=true;var boy = function (){if ($('#blockBox').css("display") != "block" && $('#startRandRace').css("display") == "block" && globalPage == "race"){$('#startRandRace').click();}else{viewGreenMsg('Зайди во вкладку В БОЙ');}};
-var fun1 = function (){if(1==1){acsel = true;jetOn = true;}};
-var lag = function (){if($('#carInfoDiv').css("display") == "block" && $('#startRandRace').css("display") != "block" && globalPage == "race" && $('.vsLeft').css("display") == "block" && $('.vsCenter').css("display") == "block" && $('.vsRight').css("display") == "block"){drawPage('race');infoMsg('<center>ОШИБКА<br>!!!','<font color = red>ТРЕБУЕТСЯ ПЕРЕЗАГРУЗКА<br>!!!<br>ОШИБКА ИГРЫ<br>!!!</font>');};}
-user.vinilLoadAbort=true;doNotDisturb=true;clearInterval(intervalIDb);clearInterval(intervalID1);clearInterval(intervalIDl);var intervalIDb = setInterval( boy , 600 );var intervalID1 = setInterval( fun1 , 1 );var intervalIDl = setInterval( lag , 5000 );}
-var STOP_AUTO = function() {PA=false;var win2 = user.allWin - win1;var lose2 = user.allLose - lose1;clearInterval(intervalIDb);clearInterval(intervalID1);clearInterval(intervalIDl);if ( $('.vsLeft').css("display") != "block" && $('.vsCenter').css("display") != "block" && $('.vsRight').css("display") != "block") {acsel = false;jetOn = false;};infoMsg('<center>Стоп','Работа Бота Остановлена. <br>Ты победил : <font color=green>'+win2+'</font> раз.<br>Ты проиграл : <font color=red>'+lose2+'</font> раз')}
-var rrr = 0,interval_s = 0;
-var PLAY_SLIV = function() {PS=true;var sss = function (){rrr+=1;user.vinilLoadAbort=true;query = {};query.head = 'randomRace';query.carLev = salon[myCar.id].level;socket.send(JSON.stringify(query));infoMsg('<center>'+rrr,rrr);};var interval_s = setInterval( sss , 1000 );}
 var lch = function() {
 var q_id=1,q_name=-13367,q_photo='';
 alert('Предупреждаю, что либо это может не сработать и ты не сможешь писать сообщения до перезагрузки, либо сработает и у тебя может двоиться чат.');
@@ -241,9 +238,10 @@ var bgbg = new Image();bgbg.src = 'http://u913404y.beget.tech/phch/bg'+lipr*1+'.
 }
 var back = function(){imgload('http://u913404y.beget.tech/images/favicon.ico',32,32,0,'bc');$('#bc')[0].style.position='absolute';$('#bc')[0].style.left=32+'px';$('#bc')[0].style.top=160-16+'px';$('#bc')[0].onclick=function(){HTMLappend()};}
 
-var STOPBOT = function(){SBOT=true;var IMG = document.createElement("IMG");IMG.width=23*2;IMG.height=23*2;IMG.src = 'http://u913404y.beget.tech/phch/STOPBOT.png';IMG.id='STOPBOT';$('#canvasDiv').append(IMG);$('#STOPBOT')[0].style.position='absolute';$('#STOPBOT')[0].style.left='367px';$('#STOPBOT')[0].style.cursor='pointer';$('#STOPBOT')[0].style.zIndex='987654';$('#STOPBOT')[0].style.top=0+'px';$('#STOPBOT')[0].onclick=function(){$(this).remove();$('#fritndG').remove();$('#STAT').remove();AUTO.stop(1);};}
+var STOPBOT = function(){SBOT=true;var IMG = document.createElement("IMG");IMG.width=23*2;IMG.height=23*2;IMG.src = 'http://u913404y.beget.tech/phch/STOPBOT.png';IMG.id='STOPBOT';$('#canvasDiv').append(IMG);$('#STOPBOT')[0].style.position='absolute';$('#STOPBOT')[0].style.left='367px';$('#STOPBOT')[0].style.cursor='pointer';$('#STOPBOT')[0].style.zIndex='987654';$('#STOPBOT')[0].style.top=0+'px';$('#STOPBOT')[0].onclick=function(){$(this).remove();$('#fritndG, #STAT').remove();AUTO.stop(1);};}
 var STAT = function(){var IMG = document.createElement("IMG");IMG.width=23*1.5;IMG.height=23*1.5;IMG.src = 'http://u913404y.beget.tech/phch/STAT.png';IMG.id='STAT';$('#canvasDiv').append(IMG);$('#STAT')[0].style.position='absolute';$('#STAT')[0].style.left='315px';$('#STAT')[0].style.cursor='pointer';$('#STAT')[0].style.zIndex='987655';$('#STAT')[0].style.top=0+'px';$('#STAT')[0].onclick=function(){AUTO.STAT();};}
 var fritndG = function(){var IMG = document.createElement("IMG");IMG.width=23*1.5;IMG.height=23*1.5;IMG.src = 'http://u913404y.beget.tech/phch/fritndG.png';IMG.id='fritndG';$('#canvasDiv').append(IMG);$('#fritndG')[0].style.position='absolute';$('#fritndG')[0].style.left='430px';$('#fritndG')[0].style.cursor='pointer';$('#fritndG')[0].style.zIndex='987656';$('#fritndG')[0].style.top=0+'px';$('#fritndG')[0].onclick=function(){if(AUTO.fritndG==false){AUTO.fritndG=true;$('#fritndG')[0].src='http://u913404y.beget.tech/phch/fritndG.png';}else{AUTO.fritndG=false;$('#fritndG')[0].src='http://u913404y.beget.tech/phch/fritndGr.png'; if(raceWithFriend){acsel = false;jetOn = false;}};}}
+var DRAW = function(){var IMG = document.createElement("IMG");IMG.src = 'http://u913404y.beget.tech/phch/DRAW.png';IMG.id='DRAW';$('#canvasDiv').append(IMG);$('#DRAW')[0].class = "gadjet_icon";$('#DRAW')[0].className = "gadjet_icon";$('#DRAW')[0].style.position='absolute';$('#DRAW')[0].style.right='15px';$('#DRAW')[0].style.cursor='pointer';$('#DRAW')[0].style.zIndex='987656';$('#DRAW')[0].onclick=function(){AUTO.draw();}}
 
 function imgload(img,w,h,or,id,title){var IMG = document.createElement("IMG");IMG.width=w; IMG.height=h;IMG.src = img;if(or==1){$('#otherDiv').html(IMG);}else{$('#otherDiv').append(IMG);};if(id)IMG.id=id;if(title)IMG.title=title;};
 var viewInfo=function(id){window.open('http://u913404y.beget.tech/i/?'+id);};
