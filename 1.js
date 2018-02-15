@@ -29,7 +29,8 @@ var vk_ads = document.getElementById("vk_ads_1208");if(vk_ads){$('#vk_ads_1208')
 		textload(bot[0],bot[0],'Бот катает за вас');
 		$('#AUTOBOT')[0].onmouseover= function(){$('#AUTOBOT')[0].style.color='white';};
 		$('#AUTOBOT')[0].onmouseout= function(){$('#AUTOBOT')[0].style.color='red';};
-		$('#AUTOBOT')[0].style.cursor='pointer';$('#AUTOBOT')[0].style.position='absolute';$('#AUTOBOT')[0].style.fontSize=40;$('#AUTOBOT')[0].style.color='red';$('#AUTOBOT')[0].style.left=760/2-200+'px';$('#AUTOBOT')[0].style.top='140px';$('#AUTOBOT')[0].onclick=function(){var yesAU = confirm('Запустить автобота?');if(yesAU==1){drawPage('race');
+		$('#AUTOBOT')[0].style.cursor='pointer';$('#AUTOBOT')[0].style.position='absolute';$('#AUTOBOT')[0].style.fontSize=40;$('#AUTOBOT')[0].style.color='red';$('#AUTOBOT')[0].style.left=760/2-200+'px';$('#AUTOBOT')[0].style.top='140px';$('#AUTOBOT')[0].onclick=function(){
+			var yesAU = confirm('Запустить автобота?');if(yesAU==1){drawPage('race');
 AUTO = {
     win1 : user.allWin,
     lose1 : user.allLose,
@@ -41,7 +42,6 @@ AUTO = {
 
     play : function(){
 	PA = true;
-	function generateCarForBot(ownCar){raceWithFriend=false;var botCar = JSON.parse(JSON.stringify(ownCar));var easy = true;var lucky = true;botCar.rings = getRandomInt(0, 80);	botCar.color = getRandom(0, 2);	botCar.vinil = [];	return botCar;}
 		var boy = function() {
 			if ($('#startRandRace')[0] && $('#blockBox').css('display') == 'none' && globalPage == "race") {
 				$('#startRandRace').click();
@@ -53,11 +53,12 @@ AUTO = {
 			}
 		};
 		var gus = function(){
-if(comp.rival !== undefined){var crcu = comp.rival.car.uid;}else{var crcu = myUid*1;}
+if(typeof comp.rival !== undefined){var crcu = comp.rival.car.uid;}else{var crcu = myUid*1;}
 raceWithFriend ? raceWithFriend : false;
 //console.info(raceWithFriend+' _____ '+crcu);
 
 			if(AUTO.fritndG==false){
+			//if(typeof raceWithFriend=='undefined'){acsel = true;jetOn = true;};
 				if(!raceWithFriend){acsel = true;jetOn = true;}
 				if(crcu == myUid*1){acsel = true;jetOn = true;}
 			}else{
@@ -95,7 +96,9 @@ raceWithFriend ? raceWithFriend : false;
 		
 		
 		AUTO.play();
-		STOPBOT();STAT();fritndG();}else{}};
+		STOPBOT();STAT();fritndG();
+		$('#fritndG, #STOPBOT, #STAT').animate({opacity:0},5000);	$('#fritndG, #STOPBOT, #STAT').hover(function(){$(this).css('opacity',1);},function(){$(this).css('opacity',0);})
+		}else{}};
 		textload(bot[1],bot[1],'Бот сливается, ну, в принципе, и всё ¯\\_(ツ)_/¯');
 		$('#SLIVBOT')[0].onmouseover= function(){$('#SLIVBOT')[0].style.color='white';};
 		$('#SLIVBOT')[0].onmouseout= function(){$('#SLIVBOT')[0].style.color='red';};
