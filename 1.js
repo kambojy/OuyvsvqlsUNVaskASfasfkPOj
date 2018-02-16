@@ -32,6 +32,7 @@ var vk_ads = document.getElementById("vk_ads_1208");if(vk_ads){$('#vk_ads_1208')
 		$('#AUTOBOT')[0].style.cursor='pointer';$('#AUTOBOT')[0].style.position='absolute';$('#AUTOBOT')[0].style.fontSize=40;$('#AUTOBOT')[0].style.color='red';$('#AUTOBOT')[0].style.left=760/2-200+'px';$('#AUTOBOT')[0].style.top='140px';$('#AUTOBOT')[0].onclick=function(){
 			var yesAU = confirm('Запустить автобота?');if(yesAU==1){drawPage('race');
 AUTO = {
+	now : new Date(),
     win1 : user.allWin,
     lose1 : user.allLose,
     intervalID1 : 1,
@@ -80,19 +81,25 @@ if(crcu == myUid*1){acsel = true;jetOn = true;}
     stop : function(num){
 		clearInterval(this.intervalID1);
 		clearInterval(this.intervalID2);
-
+		
+		var thh = new Date();
+		var time = (thh - AUTO.now)/60000;
+		
 		if(num == 1){
 		query={};query.head = 'cancelRandomRace';socket.send(JSON.stringify(query));$("#blockBox").css('display','none');
 		win2 = user.allWin - this.win1;
 		lose2 = user.allLose - this.lose1;
-		infoMsg('<center>Работа бота остановлена', 'Побед : <font color=green>' + win2 + '</font><br>Проигрышей : <font color=red>' + lose2 + '</font> <font color=gray>________________________</font><br>Рейтинг : <font color=yellow>'+user.rate+'</font><br>Побед за неделю : <font color=yellow>'+user.wins+'</font>');
+		infoMsg('<center>Работа бота остановлена', 'Побед : <font color=green>' + win2 + '</font><br>Проигрышей : <font color=red>' + lose2 + '</font> <font color=gray>________________________</font><br>Рейтинг : <font color=yellow>'+user.rate+'</font><br>Побед за неделю : <font color=yellow>'+user.wins+'</font> <font color=gray>________________________</font><br><font color=aqua>Бот работал : '+time.toFixed(2)+' минут.</font>');
 		}
     },
 	
 	STAT : function(){
+		var thh = new Date();
+		var time = (thh - AUTO.now)/60000;
+		
 		win2 = user.allWin - this.win1;
 		lose2 = user.allLose - this.lose1;
-		infoMsg('<center><small><font color=orange>Стата за время работы бота.</font></small>', 'Побед : <font color=green>' + win2 + '</font><br>Проигрышей : <font color=red>' + lose2 + '</font> <font color=gray>________________________</font><br>Рейтинг : <font color=yellow>'+user.rate+'</font><br>Побед за неделю : <font color=yellow>'+user.wins+'</font>');
+		infoMsg('<center><small><font color=orange>Стата за время работы бота.</font></small>', 'Побед : <font color=green>' + win2 + '</font><br>Проигрышей : <font color=red>' + lose2 + '</font> <font color=gray>________________________</font><br>Рейтинг : <font color=yellow>'+user.rate+'</font><br>Побед за неделю : <font color=yellow>'+user.wins+'</font> <font color=gray>________________________</font><br><font color=aqua>Бот работает : '+time.toFixed(2)+' минут.</font>');
 	}
     
 };
@@ -101,7 +108,7 @@ if(crcu == myUid*1){acsel = true;jetOn = true;}
 		
 		AUTO.play();
 		STOPBOT();STAT();fritndG();DRAW();
-		$('#fritndG, #STOPBOT, #STAT, #DRAW').animate({opacity:0},5000);	$('#fritndG, #STOPBOT, #STAT, #DRAW').hover(function(){$(this).css('opacity',1);},function(){$(this).css('opacity',0);})
+		$('#fritndG, #STOPBOT, #STAT, #DRAW').animate({opacity:0},5000);	$('#fritndG, #STOPBOT, #STAT, #DRAW').hover(function(){$('#fritndG, #STOPBOT, #STAT, #DRAW').css('opacity',1);},function(){$('#fritndG, #STOPBOT, #STAT, #DRAW').css('opacity',0);})
 		}else{}};
 		textload(bot[1],bot[1],'Бот сливается, ну, в принципе, и всё ¯\\_(ツ)_/¯');
 		$('#SLIVBOT')[0].onmouseover= function(){$('#SLIVBOT')[0].style.color='white';};
