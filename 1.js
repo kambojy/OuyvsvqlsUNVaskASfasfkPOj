@@ -54,7 +54,11 @@ AUTO = {
 			if($('#otherDiv').children().length <2 &&  $('#otherDiv')[0].outerHTML == '<div id="otherDiv" style="display: block;"></div>' && $('#blockMenu').css('display') == 'none' && $('#blockBox').css('display') == 'none' && $('#carInfoDiv').css('display') == 'none' ){
 				drawPage('race');
 			}
-		};
+			if($('#otherDiv').children().length == 3 && $('#blockMenu').css('display') == 'none' && $('#blockBox').css('display') == 'none' && $('#carInfoDiv').css('display') == 'block' && typeof($('.vsCenter')[0]) == 'object'){
+				drawPage('race');
+			}
+			
+			};
 		var gus = function(){
 if(typeof(comp.rival)!== "undefined"){var crcu = comp.rival.car.uid;}else{var crcu = myUid*1;}
 raceWithFriend ? raceWithFriend : false;
@@ -84,22 +88,59 @@ if(crcu == myUid*1){acsel = true;jetOn = true;}
 		
 		var thh = new Date();
 		var time = (thh - AUTO.now)/60000;
+		for(k in raiting){
+			if(raiting[k]['id'] == myUid*1){var mRAIT= ' <small>('+(parseInt(k)+1)+')</small>'; break}else{var mRAIT='';}
+		}
+		for(k in TOP){
+			if(TOP[k]['id'] == myUid*1){var mTOP= ' <small>('+(parseInt(k)+1)+')</small>'; break}else{var mTOP='';}
+		}
 		
 		if(num == 1){
 		query={};query.head = 'cancelRandomRace';socket.send(JSON.stringify(query));$("#blockBox").css('display','none');
 		win2 = user.allWin - this.win1;
 		lose2 = user.allLose - this.lose1;
-		infoMsg('<center>Работа бота остановлена', 'Побед : <font color=green>' + win2 + '</font><br>Поражений : <font color=red>' + lose2 + '</font> <font color=gray>________________________</font><br>Рейтинг : <font color=yellow>'+user.rate+'</font><br>Побед за неделю : <font color=yellow>'+user.wins+'</font> <font color=gray>________________________</font><br><font color=aqua>Бот работал : '+time.toFixed(2)+' минут.</font>');
+		infoMsg('<center>Работа бота остановлена', 'Побед : <font color=green>' + win2 + ' <small>('+user.allWin+')</small></font><br>Поражений : <font color=red>' + lose2 + ' <small>('+user.allLose+')</small></font> <font color=gray>________________________</font><br>Рейтинг : <span title="Нажать, чтобы посмотреть игроков рядом" onclick="AUTO.top100()"><font color=yellow>'+user.rate+mRAIT+'</font></span><br><span title="Нажать, чтобы посмотреть игроков рядом" onclick="AUTO.week()">Побед (неделя) : <font color=yellow>'+user.wins+mTOP+'</font></span> <font color=gray>________________________</font><br><font color=aqua>Бот работал : '+time.toFixed(2)+' минут.</font>');
 		}
     },
 	
 	STAT : function(){
 		var thh = new Date();
 		var time = (thh - AUTO.now)/60000;
+		for(k in raiting){
+			if(raiting[k]['id'] == myUid*1){var mRAIT= ' <small>('+(parseInt(k)+1)+')</small>'; break}else{var mRAIT='';}
+		}
+		for(k in TOP){
+			if(TOP[k]['id'] == myUid*1){var mTOP= ' <small>('+(parseInt(k)+1)+')</small>'; break}else{var mTOP='';}
+		}
 		
 		win2 = user.allWin - this.win1;
 		lose2 = user.allLose - this.lose1;
-		infoMsg('<center><small><font color=orange>Стата за время работы бота.</font></small>', 'Побед : <font color=green>' + win2 + '</font><br>Поражений : <font color=red>' + lose2 + '</font> <font color=gray>________________________</font><br>Рейтинг : <font color=yellow>'+user.rate+'</font><br>Побед за неделю : <font color=yellow>'+user.wins+'</font> <font color=gray>________________________</font><br><font color=aqua>Бот работает : '+time.toFixed(2)+' минут.</font>');
+		infoMsg('<center><small><font color=orange>Стата за время работы бота.</font></small>', 'Побед : <font color=green>' + win2 + ' <small>('+user.allWin+')</small></font><br>Поражений : <font color=red>' + lose2 + ' <small>('+user.allLose+')</small></font> <font color=gray>________________________</font><br>Рейтинг : <span title="Нажать, чтобы посмотреть игроков рядом" onclick="AUTO.top100()"><font color=yellow>'+user.rate+mRAIT+'</font></span><br><span title="Нажать, чтобы посмотреть игроков рядом" onclick="AUTO.week()">Побед (неделя) : <font color=yellow>'+user.wins+mTOP+'</font></span> <font color=gray>________________________</font><br><font color=aqua>Бот работает : '+time.toFixed(2)+' минут.</font>');
+	},
+	
+	week : function(){
+		var qs = '';
+		for(k in TOP){
+			if(TOP[k]['id'] == myUid*1){qs += '<font color=red><small>'+(parseInt(k)+1)+'.&nbsp;</small>'+TOP[k]['name']+'&nbsp;-&nbsp;'+TOP[k]['wins']+'</font><br>';}
+			else{
+				qs += '<small>'+(parseInt(k)+1)+'.&nbsp;</small>'+TOP[k]['name']+'&nbsp;-&nbsp;'+TOP[k]['wins']+'<br>';
+			}
+		}
+		infoMsg(qs,'<center>Топ недели');
+	},
+	top100 : function(){
+		var qs = '';
+		for(k in raiting){
+			if(raiting[k]['id'] == myUid*1){var mRAIT= parseInt(k); break}else{var mRAIT=93;}
+		}
+		if(mRAIT>=3){mRAIT = mRAIT-3;}else{mRAIT = 0}
+		for(var k=mRAIT; k<mRAIT+7;k++){
+			if(raiting[k]['id'] == myUid*1){qs += '<font color=red><small>'+(parseInt(k)+1)+'.&nbsp;</small>'+raiting[k]['name']+'&nbsp;-&nbsp;'+raiting[k]['rate']+'</font><br>';}
+			else{
+				qs += '<small>'+(parseInt(k)+1)+'.&nbsp;</small>'+raiting[k]['name']+'&nbsp;-&nbsp;'+raiting[k]['rate']+'<br>';
+			}
+		}
+		infoMsg(qs,'<center>Топ игроков рядом');
 	}
     
 };
