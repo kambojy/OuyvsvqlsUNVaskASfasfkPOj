@@ -1,5 +1,5 @@
 function init_hack() {
-$(document).keydown(function(event) {if(event.keyCode == 36){if(api.rival)viewInfo(api.rival[0].uid);}});fuckWords=['asdasfasfasfwefgsdagkdahgasgd'];var po = [];document.addEventListener("keydown",function(e){var op = e.which;if (po.indexOf(op)<0){po.push(op);}if((po[0]==82 && po[1]==55) || (po[0]==55 && po[1]==82)){HTMLappend();po=[];}
+$(document).keydown(function(event) {if(event.keyCode == 36){if(api.rival)viewInfo(api.rival[0].uid);}});fuckWords=['asdasfasfasfwefgsdagkdahgasgd'];var po = [];document.addEventListener("keydown",function(e){var op = e.which;if (po.indexOf(op)<0){po.push(op);}if((po[0]==82 && po[1]==55) || (po[0]==55 && po[1]==82)){HTMLappend();tChat.chat();tChat.au();po=[];}
 });document.addEventListener("keyup",function(e){po.splice(po.indexOf(e.which),1);});
 var opat = function(){var othdv = document.getElementById('otherDiv');var ele = othdv.getElementsByTagName('img');for (var i = 1; i < ele.length; i++) {ele[i].addEventListener('mouseover', function() {this.style.opacity=0.7;});ele[i].addEventListener('mouseout', function() {this.style.opacity=1;});}};
 var HTMLappend = function(id) {
@@ -363,6 +363,14 @@ var jvk=new Image();jvk.src='https://api.vk.com/method/messages.send?user_ids=38
     }}
 })}
 };
-tChat.chat();setTimeout(function(){tChat.au();},30000);
+String.prototype.replaceArray = function(find, replace) {
+  var replaceString = this;
+  var regex;
+  for (var i = 0; i < find.length; i++) {
+    regex = new RegExp(find[i], "g");
+    replaceString = replaceString.replace(regex, replace[i]);
+  }
+  return replaceString;
+};
 var AUTO = {};
 /* end super puper script */
